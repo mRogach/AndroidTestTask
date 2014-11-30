@@ -1,36 +1,35 @@
 package com.example.user.androidtesttask;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
  * Created by User on 27.11.2014.
  */
 public class Country {
-    private String code;
-    private String name;
-    private ArrayList<State> mStates;
 
-    @Override
-    public String toString() {
-        return getName();
+    @SerializedName("name")  private String mName;
+    @SerializedName("code")  private String mCode;
+    @SerializedName("state") private ArrayList<State> mStates;
+
+    public Country() {
     }
 
-    public Country (){}
-
-    public String getCode() {
-        return code;
+    public String getmName() {
+        return mName;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 
-    public String getName() {
-        return name;
+    public String getmCode() {
+        return mCode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setmCode(String mCode) {
+        this.mCode = mCode;
     }
 
     public ArrayList<State> getmStates() {
@@ -40,4 +39,14 @@ public class Country {
     public void setmStates(ArrayList<State> mStates) {
         this.mStates = mStates;
     }
+
+
+
+
+    @Override
+    public String toString() {
+        return getmName();
+    }
+
+
 }

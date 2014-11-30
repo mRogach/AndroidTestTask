@@ -52,14 +52,11 @@ import java.util.ArrayList;
             }
 
             SlidingMenuItem slidingMenuItem = getSlidingMenuItem(position);
-            TextView textView = (TextView) convertView
-                    .findViewById(R.id.slidingmenu_sectionitem_label);
+            TextView textView = (TextView) convertView.findViewById(R.id.slidingmenu_sectionitem_label);
             textView.setText(slidingMenuItem.getTitle());
 
-            final ImageView itemIcon = (ImageView) convertView
-                    .findViewById(R.id.slidingmenu_sectionitem_icon);
-            itemIcon.setImageDrawable(getDrawableByName(
-                    slidingMenuItem.getIcon(), this.context));
+            final ImageView itemIcon = (ImageView) convertView.findViewById(R.id.slidingmenu_sectionitem_icon);
+            itemIcon.setImageDrawable(getDrawableByName(slidingMenuItem.getIcon(), this.context));
             return convertView;
         }
 
@@ -69,10 +66,7 @@ import java.util.ArrayList;
         }
 
     public static Drawable getDrawableByName( String name, Context context ) {
-        int drawableResource = context.getResources().getIdentifier(
-                name,
-                "drawable",
-                context.getPackageName());
+        int drawableResource = context.getResources().getIdentifier(name,"drawable", context.getPackageName());
         if ( drawableResource == 0 ) {
             throw new RuntimeException("Can't find drawable with name: " + name );
         }
