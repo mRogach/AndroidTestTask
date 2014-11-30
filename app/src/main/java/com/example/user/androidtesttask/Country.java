@@ -10,6 +10,13 @@ import java.util.ArrayList;
 public class Country {
 
     @SerializedName("name")  private String mName;
+
+    public Country(String mName, String mCode, ArrayList<State> mStates) {
+        this.mName = mName;
+        this.mCode = mCode;
+        this.mStates = mStates;
+    }
+
     @SerializedName("code")  private String mCode;
     @SerializedName("state") private ArrayList<State> mStates;
 

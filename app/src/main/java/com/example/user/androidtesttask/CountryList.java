@@ -10,7 +10,12 @@ import java.util.ArrayList;
 public class CountryList {
     @SerializedName("result") private ArrayList<Country> mCountries;
 
+    public CountryList(ArrayList<Country> mCountries) {
+        this.mCountries = mCountries;
+    }
+
     public CountryList() {
+
     }
 
     public ArrayList<Country> getmCountries() {

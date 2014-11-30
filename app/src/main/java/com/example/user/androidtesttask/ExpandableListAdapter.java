@@ -29,7 +29,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
+        return 0;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this.list.getmCountries().get(groupPosition).getmStates() != null) {
+       if (this.list.getmCountries().get(groupPosition).getmStates() != null) {
             return this.list.getmCountries().get(groupPosition).getmStates().size();
-        } else {
+       } else {
             return 0;
-        }
+         }
     }
 
     @Override
@@ -66,9 +66,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return this.list.getmCountries().size();
     }
 
+
     @Override
     public long getGroupId(int groupPosition) {
-        return groupPosition;
+        return 0;
     }
 
     @Override

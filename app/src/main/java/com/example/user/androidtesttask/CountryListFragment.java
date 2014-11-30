@@ -15,14 +15,12 @@ import com.google.gson.GsonBuilder;
 
 public class CountryListFragment extends Fragment {
     public static final String COUNTRY_URL = "https://api.theprintful.com/countries/";
-    private Country country;
     private CountryList countries;
     private ExpandableListView expandableListView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        country = new Country();
         countries = new CountryList();
     }
 
@@ -68,7 +66,7 @@ public class CountryListFragment extends Fragment {
         protected void onPostExecute(CountryList list) {
             super.onPostExecute(list);
             countries = list;
-            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(getActivity(), list);
+            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(getActivity(), countries);
             expandableListView.setAdapter(expandableListAdapter);
         }
     }

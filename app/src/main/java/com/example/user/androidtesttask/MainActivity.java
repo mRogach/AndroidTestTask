@@ -65,15 +65,15 @@ public class MainActivity extends Activity {
         String currentDateandTime = sdf.format(new Date());
 
         sharedPreferences = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
-       // boolean hasVisited = (sharedPreferences.getBoolean("ooo", false));
-       // if (!hasVisited) {
-            // выводим нужную активность
-         //   SharedPreferences.Editor e = sharedPreferences.edit();
-        //    e.putString(NOT_VISITED_TAG, NOT_VISITED_MESSAGE);
-
-        //    e.putBoolean("ooo", true);
-       //     e.commit(); // не забудьте подтвердить изменения
-      //  }else {
+//       boolean hasVisited = (sharedPreferences.getBoolean("ooo", false));
+//       if (!hasVisited) {
+//            выводим нужную активность
+//            SharedPreferences.Editor e = sharedPreferences.edit();
+//            e.putString(NOT_VISITED_TAG, NOT_VISITED_MESSAGE);
+//
+//            e.putBoolean("ooo", true);
+//            e.commit(); // не забудьте подтвердить изменения
+//        }else {
             SharedPreferences.Editor e = sharedPreferences.edit();
             e.putString(VISITED_TAG, currentDateandTime);
             e.commit();

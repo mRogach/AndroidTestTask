@@ -9,7 +9,13 @@ public class State {
     @SerializedName("name")  private String mName;
     @SerializedName("code")  private String mCode;
 
+    public State(String mName, String mCode) {
+        this.mName = mName;
+        this.mCode = mCode;
+    }
+
     public State() {
+
     }
 
     public String getmName() {
