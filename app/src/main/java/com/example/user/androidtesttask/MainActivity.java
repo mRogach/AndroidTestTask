@@ -11,15 +11,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     private static final String MY_SETTINGS = "my_settings";
@@ -29,21 +34,28 @@ public class MainActivity extends Activity {
     private PendingIntent pendingIntent;
     private SlidingMenu slidingMenu;
     private SharedPreferences sharedPreferences;
-    private String whenVisited = "Вы еще здесь не были!";
+    private String whenVisited ;
     private AlertDialog.Builder alertDialog;
-
+    private Country country;
+    private String differentTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setAlarmService();
+        country = new Country();
         sharedPreferences = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(MY_SETTINGS)) {
-            whenVisited = sharedPreferences.getString(MY_SETTINGS, null);
+        whenVisited = sharedPreferences.getString(VISITED_TAG, "");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String currentDateandTime = sdf.format(new Date());
+        try {
+            differentTime = getTimeDiff(whenVisited, currentDateandTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle(R.string.date_info_title);
-        alertDialog.setMessage(whenVisited);
+        alertDialog.setMessage(whenVisited + "(" + differentTime + ")");
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Fragment fragment = new CountryListFragment();
@@ -59,25 +71,14 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMdd_HHmm");
+    protected void onDestroy() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         String currentDateandTime = sdf.format(new Date());
-
         sharedPreferences = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
-//       boolean hasVisited = (sharedPreferences.getBoolean("ooo", false));
-//       if (!hasVisited) {
-//            выводим нужную активность
-//            SharedPreferences.Editor e = sharedPreferences.edit();
-//            e.putString(NOT_VISITED_TAG, NOT_VISITED_MESSAGE);
-//
-//            e.putBoolean("ooo", true);
-//            e.commit(); // не забудьте подтвердить изменения
-//        }else {
-            SharedPreferences.Editor e = sharedPreferences.edit();
-            e.putString(VISITED_TAG, currentDateandTime);
-            e.commit();
-       // }
+        SharedPreferences.Editor e = sharedPreferences.edit();
+        e.putString(VISITED_TAG, currentDateandTime);
+        e.commit();
+        super.onDestroy();
     }
 
     @Override
@@ -142,5 +143,20 @@ public class MainActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+private String getTimeDiff(String time,String curTime) throws ParseException
+{
+    DateFormat formatter ;
+    Date curDate ;
+    Date oldDate ;
+    formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    curDate =(Date)formatter.parse(curTime);
+    oldDate = (Date)formatter.parse(time);
+    long oldMillis=oldDate.getTime();
+    long curMillis=curDate.getTime();
+    Log.d("CaseListAdapter", "Date-Milli:Now:" + curDate.toString() + ":" + curMillis + " old:" + oldDate.toString() + ":" + oldMillis);
+    CharSequence text= DateUtils.getRelativeTimeSpanString(oldMillis, curMillis, 0);
+    return text.toString();
+}
 }
 

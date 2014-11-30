@@ -18,7 +18,7 @@ public class Country {
     }
 
     @SerializedName("code")  private String mCode;
-    @SerializedName("state") private ArrayList<State> mStates;
+    @SerializedName("states") private ArrayList<State> mStates;
 
     public Country() {
     }
