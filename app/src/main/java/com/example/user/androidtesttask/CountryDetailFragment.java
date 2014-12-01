@@ -17,8 +17,8 @@ import com.google.gson.GsonBuilder;
 /**
 * Created by User on 30.11.2014.
 */
-public class CountryDetailFragment extends Fragment{
-    public static final String COUNTRY_DETAIL_URL = "http://www.geognos.com/api/en/countries/info/";
+public class CountryDetailFragment extends Fragment {
+    public static final String COUNTRY_DETAIL_URL = "http://restcountries.eu/rest/v1/alpha/";
     private CountryDetail countryDetail;
     private Country country;
     private ExpandableListView expandableListView;
@@ -26,10 +26,10 @@ public class CountryDetailFragment extends Fragment{
     private ImageView imageViewButton;
     private TextView textLatitude;
     private TextView textLongitude;
-    private TextView textWest;
-    private TextView textEast;
-    private TextView textNorth;
-    private TextView textSouth;
+    private TextView textCapital;
+    private TextView textRegion;
+    private TextView textArea;
+    private TextView textCallingCode;
 
 
     public static CountryDetailFragment newInstance(String code) {
@@ -52,13 +52,13 @@ public class CountryDetailFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.country_detail_fragment, container, false);
-        imageViewFlag = (ImageView)view.findViewById(R.id.img_Flag);
-        textLatitude = (TextView)view.findViewById(R.id.tv_Latitude);
-        textLongitude = (TextView)view.findViewById(R.id.tv_Longitude);
-        textWest= (TextView)view.findViewById(R.id.tv_West);
-        textEast = (TextView)view.findViewById(R.id.tv_East);
-        textNorth = (TextView)view.findViewById(R.id.tv_North);
-        textSouth = (TextView)view.findViewById(R.id.tv_South);
+        imageViewFlag = (ImageView) view.findViewById(R.id.img_Flag);
+        textLatitude = (TextView) view.findViewById(R.id.tv_Latitude);
+        textLongitude = (TextView) view.findViewById(R.id.tv_Longitude);
+        textCapital = (TextView) view.findViewById(R.id.tv_Capital);
+        textRegion = (TextView) view.findViewById(R.id.tv_Region);
+        textArea = (TextView) view.findViewById(R.id.tv_Area);
+        textCallingCode = (TextView) view.findViewById(R.id.tv_CallingCode);
         return view;
     }
 
@@ -72,26 +72,25 @@ public class CountryDetailFragment extends Fragment{
 
 
     private class CountryDetaiDownloadFromJSonAsynkTask extends AsyncTask<Country, Void, CountryDetail> {
-
-        private GsonBuilder mBuilder;
         private Gson mGson;
+
         public CountryDetaiDownloadFromJSonAsynkTask() {
-            mBuilder = new GsonBuilder();
-            mGson = mBuilder.create();
+            mGson = new GsonBuilder()
+                    .registerTypeAdapter(CountryDetail.class, new JsonCaseDeserializer())
+                    .create();
         }
 
         @Override
         protected CountryDetail doInBackground(Country... params) {
             Country item = params[0];
             CountryDetail countryDetail = null;
-            HttpRequest request = HttpRequest.get(COUNTRY_DETAIL_URL + item.getmCode() + ".json");
+            HttpRequest request = HttpRequest.get(COUNTRY_DETAIL_URL + item.getmCode());
             if (request.code() == 200) {
                 String response = request.body();
-                countryDetail = mGson.fromJson(response, CountryDetail.class);
+              countryDetail = mGson.fromJson(response, CountryDetail.class);
             }
             return countryDetail;
         }
-
 
         @Override
         protected void onPostExecute(CountryDetail result) {
@@ -99,10 +98,10 @@ public class CountryDetailFragment extends Fragment{
             countryDetail = result;
             textLatitude.setText(countryDetail.getGeoPoints().get(0).toString());
             textLongitude.setText(countryDetail.getGeoPoints().get(1).toString());
-            textWest.setText(String.valueOf(countryDetail.getGeoRectangleWest()));
-            textEast.setText(String.valueOf(countryDetail.getGeoRectangleEast()));
-            textNorth.setText(String.valueOf(countryDetail.getGeoRectangleEast()));
-            textSouth.setText(String.valueOf(countryDetail.getGeoRectangleEast()));
+            textCapital.setText(String.valueOf(countryDetail.getmCapital()));
+            textRegion.setText(String.valueOf(countryDetail.getmRegion()));
+            textArea.setText(String.valueOf(countryDetail.getmArea()));
+            textCallingCode.setText(String.valueOf(countryDetail.getmCallingCode()));
 
         }
     }

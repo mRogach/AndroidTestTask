@@ -57,6 +57,7 @@ public class CountryListFragment extends ListFragment {
                 final Fragment fragment = CountryDetailFragment.newInstance(countries.getmCountries().get(position).getmCode());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragmentContainer, fragment);
+                ft.addToBackStack("tag");
                 ft.commitAllowingStateLoss();
                 return true;
             }
