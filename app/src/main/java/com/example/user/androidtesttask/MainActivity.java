@@ -34,10 +34,11 @@ public class MainActivity extends Activity {
     private PendingIntent pendingIntent;
     private SlidingMenu slidingMenu;
     private SharedPreferences sharedPreferences;
-    private String whenVisited ;
+    private String whenVisited;
     private AlertDialog.Builder alertDialog;
     private Country country;
     private String differentTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,17 +84,16 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if ( slidingMenu.isMenuShowing()) {
+        if (slidingMenu.isMenuShowing()) {
             slidingMenu.toggle();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             this.slidingMenu.toggle();
             return true;
         }
@@ -110,12 +110,14 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    private void setAlarmService (){
+
+    private void setAlarmService() {
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.HOUR_OF_DAY, 12);
@@ -125,11 +127,12 @@ public class MainActivity extends Activity {
 
         Intent myIntent = new Intent(MainActivity.this, MyAlarmService.class);
         pendingIntent = PendingIntent.getService(MainActivity.this, 0, myIntent, 0);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
 
     }
-    private void setSlidingMenuConfigurations(){
+
+    private void setSlidingMenuConfigurations() {
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT);
         slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -144,19 +147,19 @@ public class MainActivity extends Activity {
     }
 
 
-private String getTimeDiff(String time,String curTime) throws ParseException
-{
-    DateFormat formatter ;
-    Date curDate ;
-    Date oldDate ;
-    formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    curDate =(Date)formatter.parse(curTime);
-    oldDate = (Date)formatter.parse(time);
-    long oldMillis=oldDate.getTime();
-    long curMillis=curDate.getTime();
-    Log.d("CaseListAdapter", "Date-Milli:Now:" + curDate.toString() + ":" + curMillis + " old:" + oldDate.toString() + ":" + oldMillis);
-    CharSequence text= DateUtils.getRelativeTimeSpanString(oldMillis, curMillis, 0);
-    return text.toString();
-}
+    private String getTimeDiff(String time, String curTime) throws ParseException {
+        DateFormat formatter;
+        Date curDate;
+        Date oldDate;
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        curDate = (Date) formatter.parse(curTime);
+        oldDate = (Date) formatter.parse(time);
+        long oldMillis = oldDate.getTime();
+        long curMillis = curDate.getTime();
+        Log.d("CaseListAdapter", "Date-Milli:Now:" + curDate.toString() + ":" + curMillis + " old:" + oldDate.toString() + ":" + oldMillis);
+        CharSequence text = DateUtils.getRelativeTimeSpanString(oldMillis, curMillis, 0);
+        return text.toString();
+    }
+
 }
 

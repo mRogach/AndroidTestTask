@@ -1,2 +1,2 @@
-include ":libraries:SlidingMenu", ':App'
-
+include ":libraries:SlidingMenu", ':App', ':svg-android'
+//include ":libs:svg-android.jar"

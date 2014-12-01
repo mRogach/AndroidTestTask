@@ -2,17 +2,28 @@ package com.example.user.androidtesttask;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by User on 28.11.2014.
  */
-public class CountryDetail {
+public class CountryDetail implements Serializable {
     @SerializedName("capital")  private String mCapital;
     @SerializedName("region")  private String mRegion;
     @SerializedName("area") private double mArea;
     @SerializedName("callingCodes") private int mCallingCode;
-    @SerializedName("latlng") private ArrayList<Float> geoPoints;
+    @SerializedName("latlng") private ArrayList<Double> geoPoints;
+    private String flagCode;
+
+
+    public String getFlagCode() {
+        return flagCode;
+    }
+
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
+    }
 
     public CountryDetail(){}
 
@@ -48,12 +59,11 @@ public class CountryDetail {
         this.mCallingCode = mCallingCode;
     }
 
-    public ArrayList<Float> getGeoPoints() {
+    public ArrayList<Double> getGeoPoints() {
         return geoPoints;
     }
 
-    public void setGeoPoints(ArrayList<Float> geoPoints) {
+    public void setGeoPoints(ArrayList<Double> geoPoints) {
         this.geoPoints = geoPoints;
     }
-
 }

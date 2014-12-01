@@ -3,6 +3,7 @@ package com.example.user.androidtesttask;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -54,7 +55,7 @@ public class CountryListFragment extends ListFragment {
         @Override
         public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                final Fragment fragment = CountryDetailFragment.newInstance(countries.getmCountries().get(position).getmCode());
+                final Fragment fragment = CountryDetailFragment.newInstance(countries.getmCountries().get(position) );
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragmentContainer, fragment);
                 ft.addToBackStack("tag");
@@ -70,10 +71,17 @@ public class CountryListFragment extends ListFragment {
 
         private GsonBuilder mBuilder;
         private Gson mGson;
+        private ProgressDialog progressDialog;
         public CountryDownloadFromJSonAsynkTask() {
             mBuilder = new GsonBuilder();
             mGson = mBuilder.create();
 ;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(getActivity(),"Wait","Downloading....");
         }
 
         @Override
@@ -91,6 +99,7 @@ public class CountryListFragment extends ListFragment {
         @Override
         protected void onPostExecute(CountryList list) {
             super.onPostExecute(list);
+            progressDialog.dismiss();
             countries = list;
             ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(getActivity(), countries);
             expandableListView.setAdapter(expandableListAdapter);

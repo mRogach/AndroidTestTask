@@ -1,11 +1,13 @@
 package com.example.user.androidtesttask;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,12 +15,15 @@ import android.widget.TextView;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.larvalabs.svgandroid.SVG;
+import com.squareup.picasso.Picasso;
 
 /**
 * Created by User on 30.11.2014.
 */
-public class CountryDetailFragment extends Fragment {
-    public static final String COUNTRY_DETAIL_URL = "http://restcountries.eu/rest/v1/alpha/";
+public class CountryDetailFragment extends Fragment implements View.OnClickListener{
+    private static final String COUNTRY_DETAIL_URL = "http://restcountries.eu/rest/v1/alpha/";
+    private static final String FLAGS_URL = "http://api.tinata.co.uk/img/flags/";
     private CountryDetail countryDetail;
     private Country country;
     private ExpandableListView expandableListView;
@@ -30,11 +35,12 @@ public class CountryDetailFragment extends Fragment {
     private TextView textRegion;
     private TextView textArea;
     private TextView textCallingCode;
+    private Button button;
 
 
-    public static CountryDetailFragment newInstance(String code) {
+    public static CountryDetailFragment newInstance(Country code) {
         Bundle args = new Bundle();
-        args.putString("code", code);
+        args.putSerializable("code", code);
         CountryDetailFragment countryDetailFragment = new CountryDetailFragment();
         countryDetailFragment.setArguments(args);
         return countryDetailFragment;
@@ -45,8 +51,7 @@ public class CountryDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         countryDetail = new CountryDetail();
-        country = new Country();
-        country.setmCode(getArguments().getString("code"));
+        country = (Country) getArguments().getSerializable("code");
     }
 
     @Override
@@ -59,6 +64,8 @@ public class CountryDetailFragment extends Fragment {
         textRegion = (TextView) view.findViewById(R.id.tv_Region);
         textArea = (TextView) view.findViewById(R.id.tv_Area);
         textCallingCode = (TextView) view.findViewById(R.id.tv_CallingCode);
+        button = (Button) view.findViewById(R.id.btn_Go_Map);
+
         return view;
     }
 
@@ -67,13 +74,24 @@ public class CountryDetailFragment extends Fragment {
         super.onResume();
         CountryDetaiDownloadFromJSonAsynkTask countryDetaiDownloadFromJSonAsynkTask = new CountryDetaiDownloadFromJSonAsynkTask();
         countryDetaiDownloadFromJSonAsynkTask.execute(country);
-        getActivity().getActionBar().setTitle(country.getmName());
+        button.setOnClickListener((View.OnClickListener) this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        final Fragment fragment = MyMapFragment.newInstance(countryDetail);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentContainer, fragment);
+        ft.addToBackStack("tag");
+        ft.commitAllowingStateLoss();
+
     }
 
 
     private class CountryDetaiDownloadFromJSonAsynkTask extends AsyncTask<Country, Void, CountryDetail> {
         private Gson mGson;
-
+        private String imgUrl;
+        private SVG svg;
         public CountryDetaiDownloadFromJSonAsynkTask() {
             mGson = new GsonBuilder()
                     .registerTypeAdapter(CountryDetail.class, new JsonCaseDeserializer())
@@ -89,6 +107,7 @@ public class CountryDetailFragment extends Fragment {
                 String response = request.body();
               countryDetail = mGson.fromJson(response, CountryDetail.class);
             }
+            countryDetail.setFlagCode(item.getmCode().toLowerCase());
             return countryDetail;
         }
 
@@ -96,13 +115,37 @@ public class CountryDetailFragment extends Fragment {
         protected void onPostExecute(CountryDetail result) {
             super.onPostExecute(result);
             countryDetail = result;
-            textLatitude.setText(countryDetail.getGeoPoints().get(0).toString());
-            textLongitude.setText(countryDetail.getGeoPoints().get(1).toString());
-            textCapital.setText(String.valueOf(countryDetail.getmCapital()));
-            textRegion.setText(String.valueOf(countryDetail.getmRegion()));
-            textArea.setText(String.valueOf(countryDetail.getmArea()));
-            textCallingCode.setText(String.valueOf(countryDetail.getmCallingCode()));
+            getActivity().getActionBar().setTitle(country.getmName());
+            imgUrl = FLAGS_URL + countryDetail.getFlagCode() + ".svg";
+
+            //imgUrl = "http://api.tinata.co.uk/img/flags/ua.svg";
+           // svg = SVGParser.getSVGFromString(imgUrl);
+           // Drawable drawable = svg.createPictureDrawable();
+          //  imageViewFlag.setImageDrawable(drawable);
+
+               // loadPicture(imgUrl, imageViewFlag);
+
+            imageViewFlag.setImageResource(R.drawable.ic_launcher);
+
+            //loadPicture(imgUrl, imageViewFlag);
+            textLatitude.setText("Latitude: " + countryDetail.getGeoPoints().get(0).toString());
+            textLongitude.setText("Longitude: " + countryDetail.getGeoPoints().get(1).toString());
+            textCapital.setText("Capital: " + String.valueOf(countryDetail.getmCapital()));
+            textRegion.setText("Region: " + String.valueOf(countryDetail.getmRegion()));
+            textArea.setText("Area: " + String.valueOf(countryDetail.getmArea()));
+            textCallingCode.setText("CallingCode: " + String.valueOf(countryDetail.getmCallingCode()));
 
         }
     }
+
+    private void loadPicture(String url,  ImageView imageView) {
+        Picasso.with(getActivity())
+                .load(url)
+              //  .placeholder(R.drawable.ic_launcher)
+               // .error(R.drawable.ic_launcher)
+               // .resizeDimen(80, 80)
+               // .centerInside()
+                .into(imageView);
+    }
+
 }

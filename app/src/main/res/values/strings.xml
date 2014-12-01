@@ -8,6 +8,7 @@
     <string name="thetitle">Countries</string>
     <string name="menu_settings">Settings</string>
     <string name="date_info_title">В последний раз я заходил в приложение:</string>
+    <string name="go_map">GO MAP</string>
 
 
 </resources>

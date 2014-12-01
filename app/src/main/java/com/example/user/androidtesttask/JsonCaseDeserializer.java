@@ -10,9 +10,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-/**
- * Created by RICHI on 2014.10.19..
- */
+
 public class JsonCaseDeserializer implements JsonDeserializer<CountryDetail> {
 
     @Override
@@ -40,10 +38,10 @@ public class JsonCaseDeserializer implements JsonDeserializer<CountryDetail> {
 
         if (jsonObject.has("latlng")) {
             JsonArray array = (JsonArray) jsonObject.get("latlng");
-            ArrayList<Float> geoPoints = new ArrayList<Float>();
+            ArrayList<Double> geoPoints = new ArrayList<Double>();
 
-            float lititude = array.get(0).getAsFloat();
-            float longitude = array.get(1).getAsFloat();
+            double lititude = array.get(0).getAsDouble();
+            double longitude = array.get(1).getAsDouble();
             geoPoints.add(lititude);
             geoPoints.add(longitude);
             cs = new CountryDetail();

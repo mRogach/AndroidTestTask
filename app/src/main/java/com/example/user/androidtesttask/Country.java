@@ -2,12 +2,13 @@ package com.example.user.androidtesttask;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by User on 27.11.2014.
  */
-public class Country {
+public class Country implements Serializable {
 
     @SerializedName("name")  private String mName;
 

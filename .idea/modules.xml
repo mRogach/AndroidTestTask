@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidTestTask.iml" filepath="$PROJECT_DIR$/AndroidTestTask.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/App.iml" filepath="$PROJECT_DIR$/app/App.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/SlidingMenu/SlidingMenu.iml" filepath="$PROJECT_DIR$/libraries/SlidingMenu/SlidingMenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/svg-android/svg-android.iml" filepath="$PROJECT_DIR$/svg-android/svg-android.iml" />
     </modules>
   </component>
 </project>
