@@ -1,6 +1,9 @@
 package com.example.user.androidtesttask;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,12 +11,36 @@ import java.util.ArrayList;
 /**
  * Created by User on 28.11.2014.
  */
+@DatabaseTable(tableName="country")
 public class CountryDetail implements Serializable {
-    @SerializedName("capital")  private String mCapital;
-    @SerializedName("region")  private String mRegion;
-    @SerializedName("area") private double mArea;
-    @SerializedName("callingCodes") private int mCallingCode;
-    @SerializedName("latlng") private ArrayList<Double> geoPoints;
+
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField(dataType= DataType.STRING)
+    @SerializedName("name")
+    private String mName;
+
+    @DatabaseField(dataType= DataType.STRING)
+    @SerializedName("capital")
+    private String mCapital;
+
+    @DatabaseField(dataType=DataType.STRING)
+    @SerializedName("region")
+    private String mRegion;
+
+    @DatabaseField(dataType=DataType.DOUBLE)
+    @SerializedName("area")
+    private double mArea;
+
+    @DatabaseField(dataType=DataType.INTEGER)
+    @SerializedName("callingCodes")
+    private int mCallingCode;
+
+    @SerializedName("latlng")
+    private ArrayList<Double> geoPoints;
+
+    @DatabaseField(dataType=DataType.STRING)
     private String flagCode;
 
 
@@ -65,5 +92,20 @@ public class CountryDetail implements Serializable {
 
     public void setGeoPoints(ArrayList<Double> geoPoints) {
         this.geoPoints = geoPoints;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 }

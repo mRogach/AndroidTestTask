@@ -40,7 +40,11 @@ public class SlidingMenuFragment extends Fragment implements AdapterView.OnItemC
                     ft.commitAllowingStateLoss();
                     break;
                 case  1:
-                   //action2
+                    final Fragment fragment2 = new DBCountryFragment();
+                    FragmentTransaction ft2 = getFragmentManager().beginTransaction();
+                    ft2.replace(R.id.fragmentContainer, fragment2);
+                    ft2.addToBackStack("tag");
+                    ft2.commitAllowingStateLoss();
                    break;
                 case  2:
                    getActivity().finish();

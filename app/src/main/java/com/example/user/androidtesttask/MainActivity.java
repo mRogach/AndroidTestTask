@@ -26,7 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CountryDetailFragment.OnViewSelected{
+
     private static final String MY_SETTINGS = "my_settings";
     private static final String NOT_VISITED_TAG = "hasNotVisited";
     private static final String VISITED_TAG = "hasVisitedApp";
@@ -38,37 +39,29 @@ public class MainActivity extends Activity {
     private AlertDialog.Builder alertDialog;
     private Country country;
     private String differentTime;
+    private CountryDetail countryDetail;
+    private CountryDetail test;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseManager.getInstance().init(getApplicationContext());
+        getActionBar().setDisplayShowHomeEnabled(false);
         setAlarmService();
         country = new Country();
-        sharedPreferences = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
-        whenVisited = sharedPreferences.getString(VISITED_TAG, "");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-        String currentDateandTime = sdf.format(new Date());
-        try {
-            differentTime = getTimeDiff(whenVisited, currentDateandTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle(R.string.date_info_title);
-        alertDialog.setMessage(whenVisited + "(" + differentTime + ")");
-        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Fragment fragment = new CountryListFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragmentContainer, fragment);
-                //ft.addToBackStack("tag");
-                ft.commitAllowingStateLoss();
-            }
-        });
-        alertDialog.setCancelable(false);
-        alertDialog.show();
+        setAlertDialog();
         setSlidingMenuConfigurations();
+
+//        test = new CountryDetail();
+//        test.setmName("test");
+//        test.setmCapital("Kiev");
+//        test.setmArea(321.0);
+//        test.setmRegion("test");
+//        test.setmCallingCode(111);
+//        test.setFlagCode("www");
+
     }
 
     @Override
@@ -80,6 +73,11 @@ public class MainActivity extends Activity {
         e.putString(VISITED_TAG, currentDateandTime);
         e.commit();
         super.onDestroy();
+    }
+
+    @Override
+    public void onViewSelected(CountryDetail viewId) {
+        countryDetail = viewId;
     }
 
     @Override
@@ -105,6 +103,10 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.slidingMenu.toggle();
+                return true;
+            case R.id.save:
+                Log.v("save",countryDetail.getmName());
+                DatabaseManager.getInstance().getHelper().addData(countryDetail);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -160,6 +162,33 @@ public class MainActivity extends Activity {
         CharSequence text = DateUtils.getRelativeTimeSpanString(oldMillis, curMillis, 0);
         return text.toString();
     }
+
+    private void setAlertDialog(){
+        sharedPreferences = getSharedPreferences(MY_SETTINGS, Context.MODE_PRIVATE);
+        whenVisited = sharedPreferences.getString(VISITED_TAG, "");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        String currentDateandTime = sdf.format(new Date());
+        try {
+            differentTime = getTimeDiff(whenVisited, currentDateandTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(R.string.date_info_title);
+        alertDialog.setMessage(whenVisited + "(" + differentTime + ")");
+        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Fragment fragment = new CountryListFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentContainer, fragment);
+                //ft.addToBackStack("tag");
+                ft.commitAllowingStateLoss();
+            }
+        });
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
 
 }
 

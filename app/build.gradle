@@ -28,4 +28,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.4'
     compile project(':svg-android')
     compile 'com.google.android.gms:play-services:5.+'
+    compile project(':ormlite-android-4.48')
+    compile project(':ormlite-core-4.48')
 }

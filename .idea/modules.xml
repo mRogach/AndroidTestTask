@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidTestTask.iml" filepath="$PROJECT_DIR$/AndroidTestTask.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/App.iml" filepath="$PROJECT_DIR$/app/App.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/SlidingMenu/SlidingMenu.iml" filepath="$PROJECT_DIR$/libraries/SlidingMenu/SlidingMenu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ormlite-android-4.48/ormlite-android-4.48.iml" filepath="$PROJECT_DIR$/ormlite-android-4.48/ormlite-android-4.48.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ormlite-core-4.48/ormlite-core-4.48.iml" filepath="$PROJECT_DIR$/ormlite-core-4.48/ormlite-core-4.48.iml" />
       <module fileurl="file://$PROJECT_DIR$/svg-android/svg-android.iml" filepath="$PROJECT_DIR$/svg-android/svg-android.iml" />
     </modules>
   </component>

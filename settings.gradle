@@ -1,2 +1,2 @@
-include ":libraries:SlidingMenu", ':App', ':svg-android'
+include ":libraries:SlidingMenu", ':App', ':svg-android', ':ormlite-android-4.48', ':ormlite-core-4.48'
 //include ":libs:svg-android.jar"

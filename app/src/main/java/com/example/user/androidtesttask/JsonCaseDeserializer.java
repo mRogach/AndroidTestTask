@@ -17,6 +17,11 @@ public class JsonCaseDeserializer implements JsonDeserializer<CountryDetail> {
     public CountryDetail deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         CountryDetail cs = null;
         JsonObject jsonObject = json.getAsJsonObject();
+        String name = "";
+        if (jsonObject.has("name")) {
+            name = jsonObject.get("name").getAsString();
+        }
+
         String capital = "";
         if (jsonObject.has("capital")) {
             capital = jsonObject.get("capital").getAsString();
@@ -45,6 +50,7 @@ public class JsonCaseDeserializer implements JsonDeserializer<CountryDetail> {
             geoPoints.add(lititude);
             geoPoints.add(longitude);
             cs = new CountryDetail();
+                 cs.setmName(name);
                  cs.setmCapital(capital);
                  cs.setmRegion(region);
                  cs.setmArea(area);
