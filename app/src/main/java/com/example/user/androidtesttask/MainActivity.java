@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -44,29 +46,33 @@ public class MainActivity extends Activity implements CountryDetailFragment.OnVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        DatabaseManager.getInstance().init(getApplicationContext());
-        getActionBar().setDisplayShowHomeEnabled(false);
-        setAlarmService();
-        country = new Country();
-        setAlertDialog();
-        setSlidingMenuConfigurations();
-        mCountryDetail = new CountryDetail();
+        if(!(isNetworkConnected())){
+        setContentView(R.layout.empty);
+        }else {
+            setContentView(R.layout.activity_main);
+            DatabaseManager.getInstance().init(getApplicationContext());
+            getActionBar().setDisplayShowHomeEnabled(false);
+            setAlarmService();
+            country = new Country();
+            setAlertDialog();
+            setSlidingMenuConfigurations();
+            mCountryDetail = new CountryDetail();
 
-        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                int stackHeight = getFragmentManager().getBackStackEntryCount();
-                if (stackHeight > 0) {
-                    getActionBar().setHomeButtonEnabled(true);
-                    getActionBar().setDisplayHomeAsUpEnabled(true);
-                } else {
-                    getActionBar().setDisplayHomeAsUpEnabled(false);
-                    getActionBar().setHomeButtonEnabled(false);
+            getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+                    int stackHeight = getFragmentManager().getBackStackEntryCount();
+                    if (stackHeight > 0) {
+                        getActionBar().setHomeButtonEnabled(true);
+                        getActionBar().setDisplayHomeAsUpEnabled(true);
+                    } else {
+                        getActionBar().setDisplayHomeAsUpEnabled(false);
+                        getActionBar().setHomeButtonEnabled(false);
+                    }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     @Override
@@ -173,7 +179,15 @@ public class MainActivity extends Activity implements CountryDetailFragment.OnVi
         mAlertDialog.setCancelable(false);
         mAlertDialog.show();
     }
+    private boolean isNetworkConnected() {
 
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            return false;
+        } else
+            return true;
+    }
 
 }
 

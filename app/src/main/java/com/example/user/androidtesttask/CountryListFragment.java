@@ -6,8 +6,6 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,7 +25,7 @@ public class CountryListFragment extends ListFragment {
     public static final String COUNTRY_URL = "https://api.theprintful.com/countries/";
     private CountryList countries;
     private ExpandableListView expandableListView;
-
+    private static final String TAG = "fff";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +39,6 @@ public class CountryListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expandable_list_fragment, container, false);
         expandableListView =(ExpandableListView) view.findViewById(android.R.id.list);
-        if (!isNetworkConnected()){
-            expandableListView.setEmptyView(view.findViewById(R.id.list_empty_view));
-            return view;
-        }
         return view;
     }
 
@@ -200,13 +194,6 @@ public class CountryListFragment extends ListFragment {
 
 
     }
-    private boolean isNetworkConnected() {
 
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            return false;
-        } else
-            return true;
-    }
 }
+
