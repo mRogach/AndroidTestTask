@@ -36,7 +36,6 @@ public class SlidingMenuFragment extends Fragment implements AdapterView.OnItemC
                     final Fragment fragment = new CountryListFragment();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.fragmentContainer, fragment);
-                    //ft.addToBackStack("tag");
                     ft.commitAllowingStateLoss();
                     break;
                 case  1:

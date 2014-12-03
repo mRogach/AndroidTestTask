@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -105,6 +106,7 @@ public class CountryDetailFragment extends Fragment implements View.OnClickListe
             }
         });
     }
+
     @Override
     public void onClick(View v) {
         mClickListener.onViewSelected(countryDetail);
@@ -131,6 +133,7 @@ public class CountryDetailFragment extends Fragment implements View.OnClickListe
                 countryDetail = mGson.fromJson(response, CountryDetail.class);
             }
             countryDetail.setFlagCode(item.getmCode());
+            countryDetail.setmName(item.getmName());
             return countryDetail;
         }
 
@@ -141,34 +144,23 @@ public class CountryDetailFragment extends Fragment implements View.OnClickListe
             getActivity().getActionBar().setTitle(country.getmName());
             imgUrl = FLAGS_URL + countryDetail.getFlagCode() + ".png";
 
-            // imgUrl = "http://www.geognos.com/api/en/countries/flag/UA.png";
-            // svg = SVGParser.getSVGFromString(imgUrl);
-            // Drawable drawable = svg.createPictureDrawable();
-            //  imageViewFlag.setImageDrawable(drawable);
-
-            loadPicture(imgUrl, imageViewFlag);
-
-            //imageViewFlag.setImageResource(R.drawable.ic_launcher);
-
-            //loadPicture(imgUrl, imageViewFlag);
             textLatitude.setText("Latitude: " + countryDetail.getGeoPoints().get(0).toString());
             textLongitude.setText("Longitude: " + countryDetail.getGeoPoints().get(1).toString());
             textCapital.setText("Capital: " + String.valueOf(countryDetail.getmCapital()));
             textRegion.setText("Region: " + String.valueOf(countryDetail.getmRegion()));
             textArea.setText("Area: " + String.valueOf(countryDetail.getmArea()));
             textCallingCode.setText("CallingCode: " + String.valueOf(countryDetail.getmCallingCode()));
-
+            if (URLUtil.isValidUrl(imgUrl)) {
+                loadPicture(imgUrl, imageViewFlag);
+            } else {
+                imageViewFlag.setImageResource(R.drawable.ic_launcher);
+            }
         }
     }
 
     private void loadPicture(String url, ImageView imageView) {
         Picasso.with(getActivity())
                 .load(url)
-                //.placeholder(R.drawable.ic_launcher)
-                //.error(R.drawable.ic_launcher)
-                //.resizeDimen(80, 80)
-                //.centerInside()
-
                 .into(imageView);
     }
 

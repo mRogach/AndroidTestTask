@@ -10,6 +10,7 @@
     <string name="date_info_title">В последний раз я заходил в приложение:</string>
     <string name="go_map">GO MAP</string>
     <string name="save">save</string>
+    <string name="no_connection">Please, connect to the internet!</string>
 
 
 </resources>

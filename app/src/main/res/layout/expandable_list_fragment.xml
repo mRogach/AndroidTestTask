@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/abs__background_holo_dark"
+    android:background="@color/wallet_highlighted_text_holo_light"
     >
     <ExpandableListView
         android:id="@android:id/list"
@@ -12,4 +12,12 @@
         android:indicatorLeft="250dp"
         android:indicatorRight="300dp"
         />
+    <TextView android:id="@+id/list_empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_connection"
+        android:textSize="20dp"
+        android:textColor="#ff646464"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"/>
 </LinearLayout>

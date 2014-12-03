@@ -26,7 +26,7 @@ public class DBCountryFragment extends ListFragment implements AdapterView.OnIte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = DatabaseManager.getInstance().getHelper().GetData();
+        list = DatabaseManager.getInstance().getmHelper().GetData();
     }
 
     @Nullable
@@ -77,9 +77,8 @@ public class DBCountryFragment extends ListFragment implements AdapterView.OnIte
                 return view;
             CountryDetail obj = list.get(position);
             holder.name = (TextView) view.findViewById(R.id.tv_name);
-            if (null != holder.name && null != obj && obj.getmName().length() != 0) {
-                holder.name.setText(obj.getmName());
-            }
+            holder.name.setText(obj.getmName());
+
             return view;
         }
 

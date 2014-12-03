@@ -9,7 +9,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 class DatabaseManager {
     private static volatile DatabaseManager instance;
-    private DatabaseHelper helper;
+    private DataBaseHelper mHelper;
 
     private DatabaseManager() {
     }
@@ -26,16 +26,16 @@ class DatabaseManager {
     }
 
     public void init(Context context){
-        if(helper == null)
-            helper = OpenHelperManager.getHelper(context, DatabaseHelper.class);
+        if(mHelper == null)
+            mHelper = OpenHelperManager.getHelper(context, DataBaseHelper.class);
     }
 
     public void release(){
-        if(helper != null)
+        if(mHelper != null)
             OpenHelperManager.releaseHelper();
     }
 
-    public DatabaseHelper getHelper() {
-        return helper;
+    public DataBaseHelper getmHelper() {
+        return mHelper;
     }
 }

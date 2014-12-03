@@ -6,6 +6,8 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,6 +41,10 @@ public class CountryListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expandable_list_fragment, container, false);
         expandableListView =(ExpandableListView) view.findViewById(android.R.id.list);
+        if (!isNetworkConnected()){
+            expandableListView.setEmptyView(view.findViewById(R.id.list_empty_view));
+            return view;
+        }
         return view;
     }
 
@@ -55,7 +61,7 @@ public class CountryListFragment extends ListFragment {
         @Override
         public boolean onItemLongClick(AdapterView <?> parent, View view, int position, long id) {
             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                final Fragment fragment = CountryDetailFragment.newInstance(countries.getmCountries().get(position) );
+                final Fragment fragment = CountryDetailFragment.newInstance(countries.getmCountries().get(position));
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragmentContainer, fragment);
                 ft.addToBackStack("tag");
@@ -193,5 +199,14 @@ public class CountryListFragment extends ListFragment {
         }
 
 
+    }
+    private boolean isNetworkConnected() {
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            return false;
+        } else
+            return true;
     }
 }
